@@ -26,19 +26,19 @@ Pasos preliminares en Windows 10:
     En la ventana Información del sistema, seleccione Resumen del sistema en la izquierda y verifique el valor de modo de BIOS en la            derecha.    
     Si el valor es UEFI, Windows se inicia en modo UEFI-GPT. Si el valor es Heredado('legacy'), Windows se inicia en modo BIOS-MBR.
     
-2. Asegurarse de deshabilitar el fastboot y el secureboot en la configuración de tu BIOS.
+2. Asegurarse de deshabilitar el fastboot y el secureboot en la configuración de tu BIOS
     
 3. Libere como mínimo 10 GB de disco duro para la instalación de ArchLinux
-
-    Arranque Windows
-    Abra MiPC
-    Clic derecho sobre Este equipo
-    Clic en Administrar
-    En la parte izquierda de la pantalla hacer clic en Administrador de discos
-    Seleccionar el disco a reducir y hacer clic derecho sobre él
-    Seleccionar Reducir Volumen
-    Especificar la cantidad de espacio en MB a reducir
-    Aceptar y reiniciar
+    
+    Arranque Windows    
+    Abra MiPC    
+    Clic derecho sobre Este equipo    
+    Clic en Administrar    
+    En la parte izquierda de la pantalla hacer clic en Administrador de discos    
+    Seleccionar el disco a reducir y hacer clic derecho sobre él    
+    Seleccionar Reducir Volumen    
+    Especificar la cantidad de espacio en MB a reducir    
+    Aceptar y reiniciar    
 
 Instalación de ArchLinux:
 
