@@ -26,7 +26,7 @@ Pasos preliminares en Windows 10:
     En la ventana Información del sistema, seleccione Resumen del sistema en la izquierda y verifique el valor de modo de BIOS en la            derecha.    
     Si el valor es UEFI, Windows se inicia en modo UEFI-GPT. Si el valor es Heredado('legacy'), Windows se inicia en modo BIOS-MBR.
     
-2. Asegurarse de deshabilitar el fastboot y el secureboot en la configuración de tu BIOS
+2. Asegúrese de deshabilitar el fastboot y el secureboot en la configuración de su BIOS
     
 3. Libere como mínimo 10 GB de disco duro para la instalación de ArchLinux
     
