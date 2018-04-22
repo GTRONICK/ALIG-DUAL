@@ -297,4 +297,4 @@ Instalación de ArchLinux:
 
         reboot
 
-Quieres hacer una donación? Envía un pago a gtronick@gmail.com desde tu cuenta de PayPal! Cualquier monto es muy bien recibido.
+Quieres hacer una donación? Entra a [https://www.paypal.me/gtronick](paypal.me/gtronick) Cualquier monto es muy bien recibido.
