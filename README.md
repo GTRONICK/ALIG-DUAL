@@ -1,20 +1,46 @@
 # INSTALACIÓN DE ARCHLINUX CON SOPORTE UEFI #
-Ingrese a https://gtronick.github.io/ALIG/ para ver la versión web.
+# DUAL BOOT CON WINDOWS 10 #
+Ingrese a https://gtronick.github.io/ALIG-DUAL/ para ver la versión web.
 
 ----
 *Use el comando:*
 
-    elinks https://gtronick.github.io/ALIG/
+    elinks https://gtronick.github.io/ALIG-DUAL/
     
 *Para acceder a esta guía desde el Live system de ArchLinux.*
 
 ----
 Sitio web de **GTRONICK**: [http://gtronick.com](http://gtronick.com)    
 Autor: Jaime Quiroga  
-Editado por última vez: **16/04/2018 09:49 AM**
+Editado por última vez: **22/04/2018 12:13 PM**
 
 El presente documento no pretende ser una guía completa para la instalación de ArchLinux. Es una guía rápida para acelerar el proceso de instalación. Para más detalles, consultar la [**Wiki**](https://wiki.archlinux.org/index.php/Installation_guide) de ArchLinux, y su guía de instalación.
 
+Pasos preliminares en Windows 10:
+
+1. Asegurarse de que Windows está instalado en modo UEFI
+
+    Arranque Windows    
+    Pulse la tecla Win y "R" para iniciar la ventana Ejecutar    
+    En la ventana Ejecutar teclee "msinfo32" y pulse Enter    
+    En la ventana Información del sistema, seleccione Resumen del sistema en la izquierda y verifique el valor de modo de BIOS en la            derecha.    
+    Si el valor es UEFI, Windows se inicia en modo UEFI-GPT. Si el valor es Heredado('legacy'), Windows se inicia en modo BIOS-MBR.
+    
+2. Asegurarse de deshabilitar el fastboot y el secureboot en la configuración de tu BIOS.
+    
+3. Libere como mínimo 10 GB de disco duro para la instalación de ArchLinux
+
+    Arranque Windows
+    Abra MiPC
+    Clic derecho sobre Este equipo
+    Clic en Administrar
+    En la parte izquierda de la pantalla hacer clic en Administrador de discos
+    Seleccionar el disco a reducir y hacer clic derecho sobre él
+    Seleccionar Reducir Volumen
+    Especificar la cantidad de espacio en MB a reducir
+    Aceptar y reiniciar
+
+Instalación de ArchLinux:
 
 1. Configurar la BIOS de tu equipo para permitir el arranque desde un dispositivo USB, y el arranque EFI. Si la instalación se está haciendo en VirtualBox, configurar la máquina virtual para permitir el arranque con EFI. Seleccionar la máquina virtual, propiedades, System, Enable EFI.
 
@@ -54,30 +80,13 @@ El presente documento no pretende ser una guía completa para la instalación de
 
         lsblk
 
-10. Crear una nueva tabla de particiones GPT en /dev/sda:
-
-        gdisk /dev/sda
-
-        w (Para escribir los cambios)
-        Y (Para aceptar los cambios)
-
-11. Verificar nuevamente: 
+10. Verificar nuevamente: 
 
         gdisk /dev/sda
 
     *Se debe listar "GPT Present" al final de la lista.*
 
-12. Crear partición /boot :
-
-        n (Crea una nueva partición)
-        (Dejar número de la partición por defecto, presionando ENTER)
-        (Dejar por defecto el sector inicial, presionando ENTER)
-        (Para el sector final, escribir +512M y presionar ENTER)
-        (Escribir EF00 cuando se pida código de partición y luego ENTER)
-        w (Para escribir los cambios y luego ENTER)
-        y (Para aceptar los cambios y luego ENTER)
-
-13. Crear particion swap :
+11. Crear particion swap :
 
         gdisk /dev/sda
         n
@@ -88,7 +97,7 @@ El presente documento no pretende ser una guía completa para la instalación de
         W
         Y
         
-14. Crear particion / :
+12. Crear particion / :
 
         gdisk /dev/sda
         n
@@ -99,7 +108,7 @@ El presente documento no pretende ser una guía completa para la instalación de
         W
         Y
 
-15. Crear partición /home :
+13. Crear partición /home :
 
         gdisk /dev/sda
         n
@@ -110,69 +119,65 @@ El presente documento no pretende ser una guía completa para la instalación de
         W
         Y
 
-16. Verificar:
+14. Verificar:
 
         lsblk
 
-17. Formatear partición /boot :
+15. Formatear particion swap :
 
-        mkfs.fat -F32 /dev/sda1
+        mkswap /dev/sda5
 
-18. Formatear particion swap :
+16. Activar swap :
 
-        mkswap /dev/sda2
+        swapon /dev/sda5
 
-19. Activar swap :
+17. Formatear particion / :
 
-        swapon /dev/sda2
+        mkfs.ext4 /dev/sda6
 
-20. Formatear particion / :
+18. Formatear partición /home :
 
-        mkfs.ext4 /dev/sda3
+        mkfs.ext4 /dev/sda7
 
-21. Formatear partición /home :
-
-        mkfs.ext4 /dev/sda4
-
-22. Montar particion / en /mnt :
+19. Montar particion / en /mnt :
         
-        mount /dev/sda3 /mnt
+        mount /dev/sda6 /mnt
 
-23. Crear directorio para /boot :
+20. Crear directorio para /boot :
 
         mkdir -p /mnt/boot
 
-24. Montar partición /boot :
+21. Montar partición /boot :
 
-        mount /dev/sda1 /mnt/boot
+        mount /dev/sda2 /mnt/boot
 
-25. Crear directorio para /home :
+22. Crear directorio para /home :
 
         mkdir -p /mnt/home
 
-26. Montar partición /home :
+23. Montar partición /home :
 
-        mount /dev/sda4 /mnt/home
+        mount /dev/sda7 /mnt/home
 
-27. Instalar los paquetes base:
+24. Instalar los paquetes base:
 
         pacstrap /mnt
 
     *Esto iniciará la instalación de los paquetes base (191.35 MiB aprox.)*
 
-28. Generar fstab:
+25. Generar fstab:
 
         genfstab -U /mnt >> /mnt/etc/fstab
 
-29. Verificar:
+26. Verificar:
 
         cat /mnt/etc/fstab
 
-30. Iniciar sesión como root en la instalación:
+27. Iniciar sesión como root en la instalación:
 
         arch-chroot /mnt /bin/bash
 
-31. Generar locales:
+28. Generar locales:
 
         nano /etc/locale.gen
 
@@ -182,11 +187,11 @@ El presente documento no pretende ser una guía completa para la instalación de
 
     *Guardar presionando Ctrl + X, luego Y y finalmente ENTER*
         
-32. Construir el soporte de idioma: 
+29. Construir el soporte de idioma: 
 
         locale-gen
 
-33. Crear el archivo de configuración correspondiente:
+30. Crear el archivo de configuración correspondiente:
 
         nano /etc/locale.conf
 
@@ -196,7 +201,7 @@ El presente documento no pretende ser una guía completa para la instalación de
 
     *Guardar presionando Ctrl + X, luego Y y finalmente ENTER*
 
-34. Ajustar zona horaria:
+31. Ajustar zona horaria:
 
         tzselect
         2 
@@ -206,37 +211,38 @@ El presente documento no pretende ser una guía completa para la instalación de
         1 (Número correspondiente a la subzona)
         ENTER
 
-35. Crear el link simbólico para hacer el cambio permanente:
+32. Crear el link simbólico para hacer el cambio permanente:
 
+        rm /etc/localtime
         ln -s /usr/share/zoneinfo/<ZONA>/<SUB_ZONA> /etc/localtime
 
     *donde < ZONA > puede ser America y < SUB_ZONA > puede ser Bogota.*
     
-36. Instalar **systemd-boot** (Sólo si no se va a usar GRUB, de lo contrario saltar al paso **40**):
+33. Instalar **systemd-boot**:
 
         bootctl --path=/boot install
 
-37. Generar archivo de configuración de systemd-boot:
+34. Generar archivo de configuración de systemd-boot:
         
         nano /boot/loader/loader.conf
 
     Agregar el siguiente contenido:
 
         default arch
-        timeout 0
+        timeout 3
         editor 0
 
     *Guardar presionando Ctrl + X, luego Y y finalmente ENTER*
 
-38. Generar el archivo de la entrada por defecto para systemd-boot:
+35. Generar el archivo de la entrada por defecto para systemd-boot:
 
-        echo $(blkid -s PARTUUID -o value /dev/sda3) > /boot/loader/entries/arch.conf
+        echo $(blkid -s PARTUUID -o value /dev/sda6) > /boot/loader/entries/arch.conf
 
     Esto generará un archivo de nombre arch.conf en la ruta especificada, con un contenido similar a:
 
         14420948-2cea-4de7-b042-40f67c618660
 
-39. Abrir el archivo generado:
+36. Abrir el archivo generado:
 
         nano /boot/loader/entries/arch.conf
 
@@ -249,39 +255,27 @@ El presente documento no pretende ser una guía completa para la instalación de
 
     *Guardar presionando Ctrl + X, luego Y y finalmente ENTER*
 
-40. Instalar **GRUB** (sólo si no instaló systemd-boot, de lo contrario saltar al paso **42**):
-        
-        grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=grub
+37. Configuración de red:
 
-    *Si se reporta un error, que indica que /boot no parece ser una partición EFI, verificar que esté correctamente montada en /mnt/boot. Para hacer esto, escribir exit para acceder a la consola del live system. Luego, ejecutar:*
-        
-        mkdir -p /mnt/boot
-        mount /dev/sda1 /mnt/boot
-        arch-chroot /mnt/ /bin/bash
-
-    *Repetir el comando de instalación grub-install....*
-
-41. Generar archivo de configuración de grub:
-        
-        grub-mkconfig -o /boot/grub/grub.cfg
-
-42. Configuración de red:
-
-    *Agregar el nombre del host a /etc/hostname, por ejemplo con:*
+    *Agregar el nombre del host a /etc/hostname, por ejemplo:*
 
         echo gtronick > /etc/hostname
 
-43. Agregar el hostname a /etc/hosts, por ejemplo:
+38. Agregar el hostname a /etc/hosts, por ejemplo:
+
+        nano /etc/hosts
+        
+    *Agregar el siguiente contenido, reemplazando gtronick por tu hostname*
         
         127.0.0.1        localhost.localdomain        localhost
         ::1              localhost.localdomain        localhost
         127.0.1.1        gtronick.localdomain	      gtronick
 
-44. Instalar paquetes para el controlador WiFi:
+39. Instalar paquetes para el controlador WiFi:
 
         pacman -S iw wpa_supplicant dialog
 
-45. Ajustar contraseña para  root:
+40. Ajustar contraseña para  root:
 
         passwd
 
@@ -289,17 +283,18 @@ El presente documento no pretende ser una guía completa para la instalación de
     *Repetir la contraseña*
 
 
-46. Salir de la sesión, desmontar particiones:
+41. Salir de la sesión, desmontar particiones:
 
         exit
         umount -R /mnt
         umount -R /mnt/boot #si existe o aún está montado
 
-47. Antes de reiniciar, verificar que se hayan desmontado todas las particiones de /dev/sda:
+42. Antes de reiniciar, verificar que se hayan desmontado todas las particiones de /dev/sda:
 
         lsblk
 
-48. Por último reiniciar con:
+43. Por último reiniciar con:
 
         reboot
 
+Quieres hacer una donación? Envía un pago a gtronick@gmail.com desde tu cuenta de PayPal! Cualquier monto es muy bien recibido.
