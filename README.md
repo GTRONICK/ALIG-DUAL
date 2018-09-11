@@ -296,5 +296,23 @@ Instalación de ArchLinux:
 43. Por último reiniciar con:
 
         reboot
+  
+44. Después de reiniciar el equipo con ArchLinux instalado, crear un nuevo usuario, por ejemplo:
 
-Quieres hacer una donación? Entra a [paypal.me/gtronick](https://www.paypal.me/gtronick) Cualquier monto es muy bien recibido.
+        useradd -m myUser
+        
+45. Asignar una contraseña al nuevo usuario creado:
+
+        passwd myUser
+        
+46. Dar permisos de uso para Sudo al nuevo usuario:
+
+        visudo
+        
+    *Buscar la línea  ROOT  ALL=(ALL) ALL y justo debajo de esta, agregar nuestro usuario, por ejemplo:*
+        
+        myUser   ALL=(ALL) ALL
+        
+    *Presionar : (dos puntos) luego q y finalmente ENTER.*
+
+Visita mi canal de YouTube para ver la instalación en video y otros tutoriales: (GTRONICK)[https://www.youtube.com/user/GTRONCK]
