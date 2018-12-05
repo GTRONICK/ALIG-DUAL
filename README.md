@@ -315,4 +315,8 @@ Instalación de ArchLinux:
         
     *Presionar : (dos puntos) luego q y finalmente ENTER.*
 
+47. Si al tratar de iniciar el sistema, arranca Windows 10 sin mostrar el menu de Systemd-boot, lea la wiki, en el siguiente enlace: 
+
+    https://wiki.archlinux.org/index.php/Unified_Extensible_Firmware_Interface#Windows_changes_boot_order
+
 Visita mi canal de YouTube para ver la instalación en video y otros tutoriales: [GTRONICK](https://www.youtube.com/user/GTRONICK)
