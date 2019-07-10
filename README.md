@@ -217,7 +217,7 @@ Instalación de ArchLinux:
         1 (Número correspondiente a la subzona)
         ENTER
 
-33. Crear el link simbólico para hacer el cambio permanente:
+33. Borrar el archivo de configuración anterior y crear el link simbólico para hacer el cambio permanente:
 
         rm /etc/localtime
         ln -s /usr/share/zoneinfo/<ZONA>/<SUB_ZONA> /etc/localtime
