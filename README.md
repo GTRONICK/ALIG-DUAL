@@ -49,44 +49,50 @@ Instalación de ArchLinux:
 3. Seleccionar:
 
         Arch Linux Arch ISO x86_64 UEFI USB
+    
+4. Cuando termine de iniciar, cargar la distribución de teclado correspondiente. Por defecto, la distribución es US (Inglés). Para listar las distribuciones de teclado disponibles usar:
 
+        ls /usr/share/kbd/keymaps/**/*.map.gz
+    
+    *Si se desea cargar la distribución para un teclado en español por ejemplo, usar:*
+   
+        loadkeys es        
 4. Para verificar que estamos en modo UEFI, ejecutar el siguiente comando: 
 
         ls /sys/firmware/efi/efivars
 
     *Si se muestra contenido en la carpeta efivars, quiere decir que arrancamos el sistema correctamente en modo UEFI.*
-
-
-5. Verificar la conexión a Internet haciendo ping a: archlinux.org (o cualquier otra página o IP)
+    
+6. Verificar la conexión a Internet haciendo ping a: archlinux.org (o cualquier otra página o IP)
 
         ping archlinux.org
 
-6. En caso de tener sólo wifi, usar:
+7. En caso de tener sólo wifi, usar:
 
         ip link (Para listar las interfaces. Ubicar la de Wifi, generalmente es wlp2s0)
         wifi-menu -o wlp2s0
 
     *Seleccionar la red, e ingresar contraseña.*
 
-7. Activar la sincronización del reloj del sistema con Internet: 
+8. Activar la sincronización del reloj del sistema con Internet: 
 
         timedatectl set-ntp true
 
-8. Verificar: (opcional)
+9. Verificar: (opcional)
 
         timedatectl status
 
-9. Identificar los discos: 
+10. Identificar los discos: 
 
         lsblk
 
-10. Verificar la tabla de particiones: 
+11. Verificar la tabla de particiones: 
 
         gdisk /dev/sda
 
     *Se debe listar "GPT Present" al final de la lista.*
 
-11. Crear particion swap :
+12. Crear particion swap :
 
         gdisk /dev/sda
         n
@@ -97,7 +103,7 @@ Instalación de ArchLinux:
         W
         Y
         
-12. Crear particion / :
+13. Crear particion / :
 
         gdisk /dev/sda
         n
@@ -108,7 +114,7 @@ Instalación de ArchLinux:
         W
         Y
 
-13. Crear partición /home :
+14. Crear partición /home :
 
         gdisk /dev/sda
         n
@@ -119,65 +125,65 @@ Instalación de ArchLinux:
         W
         Y
 
-14. Verificar:
+15. Verificar:
 
         lsblk
 
-15. Formatear particion swap :
+16. Formatear particion swap :
 
         mkswap /dev/sda5
 
-16. Activar swap :
+17. Activar swap :
 
         swapon /dev/sda5
 
-17. Formatear particion / :
+18. Formatear particion / :
 
         mkfs.ext4 /dev/sda6
 
-18. Formatear partición /home :
+19. Formatear partición /home :
 
         mkfs.ext4 /dev/sda7
 
-19. Montar particion / en /mnt :
+20. Montar particion / en /mnt :
         
         mount /dev/sda6 /mnt
 
-20. Crear directorio para /boot :
+21. Crear directorio para /boot :
 
         mkdir -p /mnt/boot
 
-21. Montar partición /boot :
+22. Montar partición /boot, en este caso es /dev/sda2 pero puede cambiar, se debe usar la partición EFI de Windows:
 
         mount /dev/sda2 /mnt/boot
 
-22. Crear directorio para /home :
+23. Crear directorio para /home :
 
         mkdir -p /mnt/home
 
-23. Montar partición /home :
+24. Montar partición /home :
 
         mount /dev/sda7 /mnt/home
 
-24. Instalar los paquetes base:
+25. Instalar los paquetes base:
 
         pacstrap /mnt
 
     *Esto iniciará la instalación de los paquetes base (191.35 MiB aprox.)*
 
-25. Generar fstab:
+26. Generar fstab:
 
         genfstab -U /mnt >> /mnt/etc/fstab
 
-26. Verificar:
+27. Verificar:
 
         cat /mnt/etc/fstab
 
-27. Iniciar sesión como root en la instalación:
+28. Iniciar sesión como root en la instalación:
 
         arch-chroot /mnt /bin/bash
 
-28. Generar locales:
+29. Generar locales:
 
         nano /etc/locale.gen
 
@@ -187,11 +193,11 @@ Instalación de ArchLinux:
 
     *Guardar presionando Ctrl + X, luego Y y finalmente ENTER*
         
-29. Construir el soporte de idioma: 
+30. Construir el soporte de idioma: 
 
         locale-gen
 
-30. Crear el archivo de configuración correspondiente:
+31. Crear el archivo de configuración correspondiente:
 
         nano /etc/locale.conf
 
@@ -201,7 +207,7 @@ Instalación de ArchLinux:
 
     *Guardar presionando Ctrl + X, luego Y y finalmente ENTER*
 
-31. Ajustar zona horaria:
+32. Ajustar zona horaria:
 
         tzselect
         2 
@@ -211,18 +217,18 @@ Instalación de ArchLinux:
         1 (Número correspondiente a la subzona)
         ENTER
 
-32. Crear el link simbólico para hacer el cambio permanente:
+33. Crear el link simbólico para hacer el cambio permanente:
 
         rm /etc/localtime
         ln -s /usr/share/zoneinfo/<ZONA>/<SUB_ZONA> /etc/localtime
 
     *donde < ZONA > puede ser America y < SUB_ZONA > puede ser Bogota.*
     
-33. Instalar **systemd-boot**:
+34. Instalar **systemd-boot**:
 
         bootctl --path=/boot install
 
-34. Generar archivo de configuración de systemd-boot:
+35. Generar archivo de configuración de systemd-boot:
         
         nano /boot/loader/loader.conf
 
@@ -234,7 +240,7 @@ Instalación de ArchLinux:
 
     *Guardar presionando Ctrl + X, luego Y y finalmente ENTER*
 
-35. Generar el archivo de la entrada por defecto para systemd-boot:
+36. Generar el archivo de la entrada por defecto para systemd-boot:
 
         echo $(blkid -s PARTUUID -o value /dev/sda6) > /boot/loader/entries/arch.conf
 
@@ -242,7 +248,7 @@ Instalación de ArchLinux:
 
         14420948-2cea-4de7-b042-40f67c618660
 
-36. Abrir el archivo generado:
+37. Abrir el archivo generado:
 
         nano /boot/loader/entries/arch.conf
 
@@ -255,13 +261,13 @@ Instalación de ArchLinux:
 
     *Guardar presionando Ctrl + X, luego Y y finalmente ENTER*
 
-37. Configuración de red:
+38. Configuración de red:
 
     *Agregar el nombre del host a /etc/hostname, por ejemplo:*
 
         echo gtronick > /etc/hostname
 
-38. Agregar el hostname a /etc/hosts, por ejemplo:
+39. Agregar el hostname a /etc/hosts, por ejemplo:
 
         nano /etc/hosts
         
@@ -271,11 +277,11 @@ Instalación de ArchLinux:
         ::1              localhost.localdomain        localhost
         127.0.1.1        gtronick.localdomain	      gtronick
 
-39. Instalar paquetes para el controlador WiFi:
+40. Instalar paquetes para el controlador WiFi:
 
-        pacman -S iw wpa_supplicant dialog
+        pacman -S iw wpa_supplicant dialog elinks vim
 
-40. Ajustar contraseña para  root:
+41. Ajustar contraseña para  root:
 
         passwd
 
@@ -283,39 +289,51 @@ Instalación de ArchLinux:
     *Repetir la contraseña*
 
 
-41. Salir de la sesión, desmontar particiones:
+42. Salir de la sesión, desmontar particiones:
 
         exit
         umount -R /mnt
         umount -R /mnt/boot #si existe o aún está montado
 
-42. Antes de reiniciar, verificar que se hayan desmontado todas las particiones de /dev/sda:
+43. Antes de reiniciar, verificar que se hayan desmontado todas las particiones de /dev/sda:
 
         lsblk
 
-43. Por último reiniciar con:
+44. Por último reiniciar con:
 
         reboot
   
-44. Después de reiniciar el equipo con ArchLinux instalado, crear un nuevo usuario, por ejemplo:
+45. Después de reiniciar el equipo con ArchLinux instalado, crear un nuevo usuario, por ejemplo:
 
         useradd -m myUser
         
-45. Asignar una contraseña al nuevo usuario creado:
+46. Asignar una contraseña al nuevo usuario creado:
 
         passwd myUser
         
-46. Dar permisos de uso para Sudo al nuevo usuario:
+47. Dar permisos de uso para Sudo al nuevo usuario:
 
         visudo
         
     *Buscar la línea  ROOT  ALL=(ALL) ALL y justo debajo de esta, agregar nuestro usuario, por ejemplo:*
         
         myUser   ALL=(ALL) ALL
-        
-    *Presionar : (dos puntos) luego q y finalmente ENTER.*
+    
+    *Para editar el documento, presionar la tecla i. Después de esto ya podremos agregar texto normalmente.*
+    *Para guardar los cambios, presionar ESC, luego escribir :wq y finalmente ENTER.*
+    
+48. Probar la conexión de red con:
 
-47. Si al tratar de iniciar el sistema, arranca Windows 10 sin mostrar el menu de Systemd-boot, lea la wiki, en el siguiente enlace: 
+        ping www.archlinux.org
+        
+49. Si se presenta error, habilitar e iniciar el servicio de dhcpcd:
+
+        sudo systemctl enable dhcpcd.service
+        sudo systemctl start dhcpcd.service
+        
+     *Se debe tener en cuenta que, si se va a instalar un entorno gráfico, después de instalado se debe deshabilitar el servicio de dhcpcd para poder hacer uso de un administrador de red con interfaz gráfica como NetworkManager*
+     
+50. Si al tratar de iniciar el sistema, arranca Windows 10 sin mostrar el menu de Systemd-boot, lea la wiki, en el siguiente enlace: 
 
     https://wiki.archlinux.org/index.php/Unified_Extensible_Firmware_Interface#Windows_changes_boot_order
 
