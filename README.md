@@ -167,7 +167,7 @@ Instalación de ArchLinux:
 
 25. Instalar los paquetes base:
 
-        pacstrap /mnt
+        pacstrap /mnt base linux linux-firmware
 
     *Esto iniciará la instalación de los paquetes base (191.35 MiB aprox.)*
 
